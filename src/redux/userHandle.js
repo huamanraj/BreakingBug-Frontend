@@ -13,8 +13,8 @@ import {
     productDetailsSuccess,
     getProductDetailsFailed,
     getProductsFailed,
-    setFilteredProducts,
-    getSearchFailed,
+    setFilteredProducts,  // Ensure this is exported from userSlice
+    getSearchFailed,      // Ensure this is exported from userSlice
     sellerProductSuccess,
     getSellerProductsFailed,
     stuffUpdated,
@@ -24,9 +24,10 @@ import {
     getSpecificProductsFailed,
     specificProductSuccess,
     updateCurrentUser,
-    underControl // Import the new action
+    underControl // Ensure this is exported from userSlice
 } from './userSlice'; // Ensure this points to the correct location
 
+// Authenticates user
 export const authUser = (fields, role, mode) => async (dispatch) => {
     dispatch(authRequest());
 
@@ -44,6 +45,7 @@ export const authUser = (fields, role, mode) => async (dispatch) => {
     }
 };
 
+// Adds new item
 export const addStuff = (address, fields) => async (dispatch) => {
     dispatch(authRequest());
 
@@ -62,6 +64,7 @@ export const addStuff = (address, fields) => async (dispatch) => {
     }
 };
 
+// Updates existing item
 export const updateStuff = (fields, id, address) => async (dispatch) => {
     try {
         const result = await axios.put(`${process.env.REACT_APP_BASE_URL}/${address}/${id}`, fields);
@@ -75,6 +78,7 @@ export const updateStuff = (fields, id, address) => async (dispatch) => {
     }
 };
 
+// Deletes item
 export const deleteStuff = (id, address) => async (dispatch) => {
     dispatch(getRequest());
 
@@ -90,6 +94,7 @@ export const deleteStuff = (id, address) => async (dispatch) => {
     }
 };
 
+// Updates customer information
 export const updateCustomer = (fields, id) => async (dispatch) => {
     dispatch(updateCurrentUser(fields));
     try {
@@ -100,6 +105,7 @@ export const updateCustomer = (fields, id) => async (dispatch) => {
     }
 };
 
+// Fetches products by seller
 export const getProductsbySeller = (id) => async (dispatch) => {
     dispatch(getRequest());
 
@@ -115,6 +121,7 @@ export const getProductsbySeller = (id) => async (dispatch) => {
     }
 };
 
+// Fetches all products
 export const getProducts = () => async (dispatch) => {
     dispatch(getRequest());
 
@@ -130,6 +137,7 @@ export const getProducts = () => async (dispatch) => {
     }
 };
 
+// Fetches product details
 export const getProductDetails = (id) => async (dispatch) => {
     dispatch(getRequest());
 
@@ -145,6 +153,7 @@ export const getProductDetails = (id) => async (dispatch) => {
     }
 };
 
+// Fetches customer list
 export const getCustomers = (id) => async (dispatch) => {
     dispatch(getRequest());
 
@@ -160,6 +169,7 @@ export const getCustomers = (id) => async (dispatch) => {
     }
 };
 
+// Fetches specific products
 export const getSpecificProducts = (id, address) => async (dispatch) => {
     dispatch(getRequest());
     try {
@@ -174,22 +184,23 @@ export const getSpecificProducts = (id, address) => async (dispatch) => {
     }
 };
 
+// Fetches searched products
 export const getSearchedProducts = (address, key) => async (dispatch) => {
     dispatch(getRequest());
 
     try {
         const result = await axios.get(`${process.env.REACT_APP_BASE_URL}/${address}/${key}`);
         if (result.data.message) {
-            dispatch(getSearchFailed(result.data.message));
+            dispatch(getSearchFailed(result.data.message)); // Ensure this action is in userSlice
         } else {
-            dispatch(setFilteredProducts(result.data.files));
+            dispatch(setFilteredProducts(result.data.files)); // Ensure this action is in userSlice
         }
     } catch (error) {
         dispatch(getError(error));
     }
 };
 
-
+// Export actions
 export {
     authRequest,
     authSuccess,
@@ -215,5 +226,5 @@ export {
     getSpecificProductsFailed,
     specificProductSuccess,
     updateCurrentUser,
-    underControl
-};  // ERROR:: exported all as required 
+    underControl // Ensure this is exported from userSlice
+};

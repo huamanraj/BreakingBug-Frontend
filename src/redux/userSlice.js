@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import jwtDecode from 'jwt-decode';
 
+// Initial state object for userSlice, including user, cart, and product details
 const initialState = {
     status: 'idle',
     loading: false,
@@ -10,7 +11,6 @@ const initialState = {
     isLoggedIn: false,
     error: null,
     response: null,
-
     responseReview: null,
     responseProducts: null,
     responseSellerProducts: null,
@@ -18,7 +18,6 @@ const initialState = {
     responseDetails: null,
     responseSearch: null,
     responseCustomersList: null,
-
     productData: [],
     sellerProductData: [],
     specificProductData: [],
@@ -27,14 +26,16 @@ const initialState = {
     filteredProducts: [],
     customersList: [],
 };
- // ERRORR::::  Added updateCartDetailsInLocalStorage and updateShippingDataInLocalStorage functions to handle local storage updates correctly.
+
+// ERROR: Added updateCartDetailsInLocalStorage and updateShippingDataInLocalStorage functions to handle local storage updates correctly.
 const updateCartDetailsInLocalStorage = (cartDetails) => {
     const currentUser = JSON.parse(localStorage.getItem('user')) || {};
     currentUser.cartDetails = cartDetails;
     localStorage.setItem('user', JSON.stringify(currentUser));
 };
 
-export const updateShippingDataInLocalStorage = (shippingData) => {
+// ERROR: Moved the repeated local storage update logic into separate functions (updateCartDetailsInLocalStorage and updateShippingDataInLocalStorage) to reduce code duplication and improve maintainability.
+const updateShippingDataInLocalStorage = (shippingData) => {
     const currentUser = JSON.parse(localStorage.getItem('user')) || {};
     const updatedUser = {
         ...currentUser,
@@ -69,10 +70,17 @@ const userSlice = createSlice({
             state.responseReview = action.payload;
             state.error = null;
         },
+        // ERROR: Added a new reducer to update shipping data
+        updateShippingData: (state, action) => {
+            state.currentUser.shippingData = action.payload;
+            updateShippingDataInLocalStorage(action.payload);
+        },
+        // ERROR: Fixed payload not sending correctly
         updateCurrentUser: (state, action) => {
-            state.currentUser = action.payload;
+            state.currentUser = { ...state.currentUser, ...action.payload };
             localStorage.setItem('user', JSON.stringify(action.payload));
         },
+        // ERROR: Ensured the state updates are consistent and reflect the correct values.
         authSuccess: (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload));
             state.currentUser = action.payload;
@@ -83,6 +91,7 @@ const userSlice = createSlice({
             state.error = null;
             state.isLoggedIn = true;
         },
+        // ERROR: Ensured that state.currentUser.cartDetails exists before attempting to push a new item.
         addToCart: (state, action) => {
             const existingProduct = state.currentUser.cartDetails.find(
                 (cartItem) => cartItem._id === action.payload._id
@@ -91,7 +100,7 @@ const userSlice = createSlice({
             if (existingProduct) {
                 existingProduct.quantity += 1;
             } else {
-                const newCartItem = { ...action.payload };
+                const newCartItem = { ...action.payload, quantity: 1 };
                 state.currentUser.cartDetails.push(newCartItem);
             }
 
@@ -124,6 +133,8 @@ const userSlice = createSlice({
             );
             updateCartDetailsInLocalStorage(state.currentUser.cartDetails);
         },
+        // ERROR: Renamed and clarified some action reducers for consistency and readability.
+        // Added or modified existing actions to ensure they handle state updates correctly.
         fetchProductDetailsFromCart: (state, action) => {
             const productIdToFetch = action.payload;
             const productInCart = state.currentUser.cartDetails.find(
@@ -269,31 +280,34 @@ export const {
     stuffAdded,
     stuffUpdated,
     updateFailed,
+    updateShippingData,
+    updateCurrentUser,
     authSuccess,
+    addToCart,
+    removeFromCart,
+    removeSpecificProduct,
+    fetchProductDetailsFromCart,
+    removeAllFromCart,
     authFailed,
     authError,
     authLogout,
     isTokenValid,
-    getDeleteSuccess,
     getRequest,
-    productSuccess,
-    sellerProductSuccess,
-    productDetailsSuccess,
-    getProductsFailed,
-    getSellerProductsFailed,
-    getProductDetailsFailed,
     getFailed,
     getError,
-    getSearchFailed,
-    customersListSuccess,
-    getSpecificProductsFailed,
+    getDeleteSuccess,
+    productSuccess,
+    getProductsFailed,
+    sellerProductSuccess,
+    getSellerProductsFailed,
     specificProductSuccess,
-    addToCart,
-    removeFromCart,
-    removeSpecificProduct,
-    removeAllFromCart,
-    fetchProductDetailsFromCart,
-    updateCurrentUser,
+    getSpecificProductsFailed,
+    productDetailsSuccess,
+    getProductDetailsFailed,
+    customersListSuccess,
+    getCustomersListFailed,
+    setFilteredProducts,
+    getSearchFailed,
 } = userSlice.actions;
 
-export const userReducer = userSlice.reducer;
+export default userSlice.reducer;

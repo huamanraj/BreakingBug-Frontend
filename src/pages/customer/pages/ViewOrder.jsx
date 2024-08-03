@@ -8,14 +8,14 @@ import { addToCart, underControl } from '../../../redux/userSlice';
 import { BasicButton, GreenButton } from '../../../utils/buttonStyles';
 import { getProductDetails, updateStuff } from '../../../redux/userHandle';
 import Popup from '../../../components/Popup';
-import { generateRandomColor, timeAgo} from '../../../utils/helperFunctions';
+import { generateRandomColor, timeAgo } from '../../../utils/helperFunctions';
 
 const ViewOrder = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const productID = params.id;
 
-    const { currentUser, currentRole,productDetails, loading, status, error, responseReview, responseDetails } = useSelector(state => state.user);
+    const { currentUser, currentRole, productDetails, loading, status, error, responseReview, responseDetails } = useSelector(state => state.user);
 
     useEffect(() => {
         dispatch(getProductDetails(productID));
@@ -43,15 +43,13 @@ const ViewOrder = () => {
 
     const deleteHandler = (reviewId) => {
         const fields = { reviewId };
-
         dispatch(updateStuff(fields, productID, "deleteProductReview"));
     };
 
-    const reviewer = currentUser && currentUser._id
+    const reviewer = currentUser && currentUser._id;
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
         if (rating === 0) {
             setMessage("Please select a rating.");
             setShowPopup(true);
@@ -74,7 +72,7 @@ const ViewOrder = () => {
             setMessage("Network Error");
             setShowPopup(true);
         }
-    }, [dispatch, responseReview,productID, status, error]);
+    }, [dispatch, responseReview, productID, status, error]);
 
     return (
         <>
@@ -153,12 +151,11 @@ const ViewOrder = () => {
                                             <ReviewCard key={index}>
                                                 <ReviewCardDivision>
                                                     <Avatar sx={{ width: "60px", height: "60px", marginRight: "1rem", backgroundColor: generateRandomColor(review._id) }}>
-                                                        {String(reviewreviewername).charAt(0)}
+                                                        {String(review.reviewer.name).charAt(0)}
                                                     </Avatar>
                                                     <ReviewDetails>
-                                                        <Typography variant="h6">{reviewreviewername}</Typography>
+                                                        <Typography variant="h6">{review.reviewer.name}</Typography>
                                                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-
                                                             <Typography variant="body2">
                                                                 {timeAgo(review.date)}
                                                             </Typography>
@@ -188,13 +185,13 @@ const ViewOrder = () => {
                                                                 onClick={handleCloseMenu}
                                                             >
                                                                 <MenuItem onClick={() => {
-                                                                    handleCloseMenu()
+                                                                    handleCloseMenu();
                                                                 }}>
                                                                     <Typography textAlign="center">Edit</Typography>
                                                                 </MenuItem>
                                                                 <MenuItem onClick={() => {
-                                                                    deleteHandler(review._id)
-                                                                    handleCloseMenu()
+                                                                    deleteHandler(review._id);
+                                                                    handleCloseMenu();
                                                                 }}>
                                                                     <Typography textAlign="center">Delete</Typography>
                                                                 </MenuItem>
@@ -235,7 +232,6 @@ const ProductContainer = styled.div`
 
 const ProductImage = styled.img`
     max-width: 300px;
-    /* width: 50%; */
     margin-bottom: 20px;
 `;
 
@@ -290,7 +286,7 @@ const ReviewWritingContainer = styled.div`
     gap: 2rem;
     justify-content: center;
     align-items: center;
-    flex-direction:column;
+    flex-direction: column;
 `;
 
 const ReviewContainer = styled.div`

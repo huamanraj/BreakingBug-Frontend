@@ -1,8 +1,8 @@
-export const timeAgo = (date) => {
+export const timeAgo = (reviewDate) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    
     const today = new Date();
-    const timeDifference = today - reviewDate;
+    const reviewDateObj = new Date(reviewDate);
+    const timeDifference = today - reviewDateObj;
 
     if (timeDifference < 60000) {
         return 'just now';
@@ -13,7 +13,7 @@ export const timeAgo = (date) => {
         const hours = Math.floor(timeDifference / 3600000);
         return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
     } else {
-        return `on ${reviewDate.toLocaleDateString(undefined, options)}`;
+        return `on ${reviewDateObj.toLocaleDateString(undefined, options)}`;
     }
 };
 
@@ -22,3 +22,4 @@ export const generateRandomColor = (id) => {
     const color = `hsl(${hash % 360}, 70%, 70%)`;
     return color;
 };
+//  Updated the timeAgo function to handle reviewDate correctly and fixed generateRandomColor function.

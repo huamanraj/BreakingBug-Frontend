@@ -15,7 +15,7 @@ import { ChartDatabyYear } from '../../../utils/chartData';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const SalesChart = ({  }) => {
+const SalesChart = ({ type }) => { // Added `type` as a prop
 
     const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const SalesChart = ({  }) => {
                 <ResponsiveChart
                     options={ChartDatabyYear.options}
                     series={ChartDatabyYear.series}
-                    type={type}
+                    type={type} // Using `type` prop
                 />
             </CardContent>
 

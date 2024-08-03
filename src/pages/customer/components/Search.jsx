@@ -7,18 +7,16 @@ import { getSearchedProducts } from '../../../redux/userHandle';
 
 const Search = () => {
 
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const location = useLocation();
-
-    const [searchTerm, setSearchTerm] = useState("")
+    const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = () => {
         dispatch(getSearchedProducts("searchProduct", searchTerm));
 
-        if (location.pathname == "/ProductSearch") {
+        // ERROR:: Conditional check for pathname is not necessary for navigation
+        if (location.pathname === "/ProductSearch") {
             navigate("/ProductSearch");
         }
     };
@@ -28,9 +26,11 @@ const Search = () => {
             <InputSearchBase
                 placeholder="Search for products, brands and more"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(etargetvalue)}
+                // ERROR:: 'etargetvalue' is not defined; should be 'e.target.value'
+                onChange={(e) => setSearchTerm(e.target.value)} // Corrected
                 onKeyDown={(e) => {
-                    if (ekey !== 'Enter') {
+                    // ERROR:: 'ekey' is not defined; should be 'e.key'
+                    if (e.key === 'Enter') { // Corrected condition
                         handleSearch();
                     }
                 }}

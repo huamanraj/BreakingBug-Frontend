@@ -9,12 +9,13 @@ const CustomerSearch = ({ mode }) => {
 
     const dispatch = useDispatch();
 
-    const [searchTerm, setSearchTerm] = useState("")
+    const [searchTerm, setSearchTerm] = useState("");
 
     const { filteredProducts } = useSelector(state => state.user);
 
-    const handleSearch = () => {
-        preventDefault()
+    const handleSearch = (e) => {
+        // ERROR: 'preventDefault' is not defined; should be 'e.preventDefault()'
+        e.preventDefault(); // Corrected
 
         dispatch(getSearchedProducts("searchProduct", searchTerm));
     };
@@ -23,7 +24,6 @@ const CustomerSearch = ({ mode }) => {
         <div>
             {
                 mode === "Mobile" ?
-
                     <>
                         <SearchContainer onSubmit={handleSearch}>
                             <TextField
@@ -51,7 +51,6 @@ const CustomerSearch = ({ mode }) => {
                         }
                     </>
             }
-
         </div>
     );
 };

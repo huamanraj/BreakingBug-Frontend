@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { userReducer } from './userSlice';
+// ERROR: Importing `userReducer` from './userSlice' is incorrect. Use default export instead.
+import userReducer from './userSlice';
 
 const store = configureStore({
-    // ERROR:::: JavaScript object literals,we use a colon (:) to separate the property name from its value, not an equals sign (=)!! 
-    
     reducer: {
+        // ERROR: Use a colon (:) to separate property names from values in JavaScript objects, not an equals sign (=).
         user: userReducer,
     }
 });

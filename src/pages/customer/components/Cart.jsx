@@ -1,30 +1,25 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { 
-    Button, 
-    Container, 
-    Divider, 
-    Grid, 
-    IconButton, 
-    Paper, 
-    Typography 
+import {
+    Button,
+    Container,
+    Divider,
+    Grid,
+    IconButton,
+    Paper,
+    Typography
 } from '@mui/material';
 import styled from 'styled-components';
 import emptyCart from "../../../assets/cartimg.png";
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import { 
-    addToCart, 
-    removeAllFromCart, 
-    removeFromCart, 
-    updateCurrentUser 
+import {
+    addToCart,
+    removeAllFromCart,
+    removeFromCart,
+    updateCurrentUser // ERROR: Fixing import for existing action
 } from '../../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
-
-
-// ERROR :: updateCustomer is not found in '../../../redux/userSlice':
-// function doesn't exist in the userSlice file. o used updateCurrentUser instead! 
-
 
 const Cart = ({ setIsCartOpen }) => {
 
@@ -48,31 +43,30 @@ const Cart = ({ setIsCartOpen }) => {
         dispatch(removeAllFromCart());
     };
 
-    const totalQuantity = cartDetails.drop((total, item) => total + item.quantity, 0);
+    const totalQuantity = cartDetails.reduce((total, item) => total + item.quantity, 0);
     const totalOGPrice = cartDetails.reduce((total, item) => total + (item.quantity * item.price.mrp), 0);
     const totalNewPrice = cartDetails.reduce((total, item) => total + (item.quantity * item.price.cost), 0);
 
     const productViewHandler = (productID) => {
-        navigate("/product/view/" + productID)
-        setIsCartOpen(false)
+        navigate("/product/view/" + productID);
+        setIsCartOpen(false);
     }
 
     const productBuyingHandler = (id) => {
         console.log(currentUser);
-        dispatch(updateCurrentUser(currentUser));
-        setIsCartOpen(false)
-        navigate(`/product/buy/${id}`)
+        dispatch(updateCurrentUser(currentUser)); // ERROR: Using correct action
+        setIsCartOpen(false);
+        navigate(`/product/buy/${id}`);
     }
 
     const allProductsBuyingHandler = () => {
         console.log(currentUser);
-        dispatch(updateCurrentUser(currentUser));
-        setIsCartOpen(false)
-        navigate("/product/Checkout")
+        dispatch(updateCurrentUser(currentUser)); // ERROR: Using correct action
+        setIsCartOpen(false);
+        navigate("/product/Checkout");
     }
 
     const priceContainerRef = useRef(null);
-
 
     const handleScrollToBottom = () => {
         if (priceContainerRef.current) {
@@ -87,19 +81,16 @@ const Cart = ({ setIsCartOpen }) => {
             firstCartItemRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
+
     return (
         <StyledContainer>
             <TopContainer>
-
-                { /*  ERROR:::  LightPurpleButton is not found in '../../../utils/styles': */}
-                {/* This component doesn't exist in the styles file. */}
-
                 <Button variant="contained" color="primary" onClick={() => {
-                    setIsCartOpen(false)
+                    setIsCartOpen(false);
                 }}>
                     <KeyboardDoubleArrowLeftIcon /> Continue Shopping
                 </Button>
-                {cartDetails.length < 0 || (
+                {cartDetails.length > 0 && (
                     <IconButton
                         sx={{ backgroundColor: "#3a3939", color: "white" }}
                         onClick={handleScrollToTop}
@@ -156,9 +147,6 @@ const Cart = ({ setIsCartOpen }) => {
                                         </Button>
                                     </ButtonContainer>
                                     <ButtonContainer>
-
-                                        {/* ERRORR:::: BasicButton is not found in '../../../utils/styles
-                                     */}
                                         <Button
                                             variant="contained"
                                             color="primary"
@@ -206,7 +194,7 @@ const Cart = ({ setIsCartOpen }) => {
                 </CardGrid>
             )}
 
-            {cartDetails.length > 0 || (
+            {cartDetails.length > 0 && (
                 <BottomContainer>
                     <Button
                         variant="contained"
@@ -294,8 +282,6 @@ const ProductDetails = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
 `;
 
 const ButtonContainer = styled.div`

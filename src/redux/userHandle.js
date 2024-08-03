@@ -188,3 +188,32 @@ export const getSearchedProducts = (address, key) => async (dispatch) => {
         dispatch(getError(error));
     }
 };
+
+
+export {
+    authRequest,
+    authSuccess,
+    authFailed,
+    authError,
+    stuffAdded,
+    getDeleteSuccess,
+    getRequest,
+    getFailed,
+    getError,
+    productSuccess,
+    productDetailsSuccess,
+    getProductDetailsFailed,
+    getProductsFailed,
+    setFilteredProducts,
+    getSearchFailed,
+    sellerProductSuccess,
+    getSellerProductsFailed,
+    stuffUpdated,
+    updateFailed,
+    getCustomersListFailed,
+    customersListSuccess,
+    getSpecificProductsFailed,
+    specificProductSuccess,
+    updateCurrentUser,
+    underControl
+};  // ERROR:: exported all as required 

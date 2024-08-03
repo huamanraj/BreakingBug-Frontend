@@ -12,7 +12,6 @@ import { fetchProductDetailsFromCart } from '../../../redux/userSlice';
 const OrderSummary = ({ handleNext, handleBack }) => {
 
     const dispatch = useDispatch();
-
     const params = useParams();
     const productID = params.id;
 
@@ -21,9 +20,11 @@ const OrderSummary = ({ handleNext, handleBack }) => {
     React.useEffect(() => {
         if (productID) {
             dispatch(fetchProductDetailsFromCart(productID));
-        }else
-            return(handleNext)
-    }, [productID, dispatch]);
+        } else {
+            // ERROR:: Missing parentheses around handleNext function call
+            handleNext(); // Corrected
+        }
+    }, [productID, dispatch, handleNext]);
 
     let cartDetails = currentUser.cartDetails;
     let shippingData = currentUser.shippingData;
@@ -70,8 +71,8 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                             <Typography variant="h6" gutterBottom sx={{ mt: 2, fontWeight: 700 }}>
                                 Shipping
                             </Typography>
-                            <Typography gutterBottom>{shippingData.city},{shippingData.state},{shippingData.country}</Typography>
-                            <Typography gutterBottom>{shippingData.city},{shippingData.state},{shippingData.country}</Typography>
+                            <Typography gutterBottom>{shippingData.city}, {shippingData.state}, {shippingData.country}</Typography>
+                            <Typography gutterBottom>{shippingData.city}, {shippingData.state}, {shippingData.country}</Typography>
                         </Grid>
                     </Grid>
                 </React.Fragment>
@@ -93,7 +94,7 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary="Discount" />
                             <Typography variant="subtitle1" sx={{ color: "green" }}>
-                                ₹{totalamount - totalNewPrice}
+                                ₹{totalOGPrice - totalNewPrice} {/* ERROR:: 'totalamount' is not defined; should be 'totalOGPrice' */}
                             </Typography>
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
@@ -115,7 +116,7 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                                 Shipping
                             </Typography>
                             <Typography gutterBottom>{currentUser.name}</Typography>
-                            <Typography gutterBottom>{shippingData.city},{shippingData.state},{shippingData.country}</Typography>
+                            <Typography gutterBottom>{shippingData.city}, {shippingData.state}, {shippingData.country}</Typography>
                         </Grid>
                     </Grid>
                 </React.Fragment>
@@ -126,7 +127,7 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                 </Button>
                 <Button
                     variant="contained"
-                    onClick={handleBack}
+                    onClick={handleNext} /* ERROR:: 'handleBack' should be 'handleNext' */
                     sx={{ mt: 3, ml: 1 }}
                 >
                     Next
@@ -136,4 +137,4 @@ const OrderSummary = ({ handleNext, handleBack }) => {
     );
 }
 
-export default OrderSummary
+export default OrderSummary;

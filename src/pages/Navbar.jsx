@@ -28,17 +28,22 @@ import { updateCustomer } from '../redux/userHandle';
 const Navbar = () => {
     const { currentUser, currentRole } = useSelector(state => state.user);
 
-    const totalQuantity = currentUser && currentUser.cartDetails && 0;
+    // ERROR: The totalQuantity calculation was incomplete:
+
+    const totalQuantity = currentUser && currentUser.cartDetails ?
+        currentUser.cartDetails.reduce((total, item) => total + item.quantity, 0) : 0;
 
     const navigate = useNavigate()
     const dispatch = useDispatch();
+
+    // ERROR :: The useEffect dependency array includes ancorElNav, which was misspelled and not used:
 
     React.useEffect(() => {
         if (currentRole === "Customer") {
             console.log(currentUser);
             dispatch(updateCustomer(currentUser, currentUser._id));
         }
-    }, [currentRole, currentUser, dispatch, ancorElNav])
+    }, [currentRole, currentUser, dispatch])
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -49,13 +54,14 @@ const Navbar = () => {
 
     const [isCartOpen, setIsCartOpen] = React.useState(false);
 
-    // Cart
-    const handleOpen Cart = () => {
-        setIsCartOpen(true);
+    // Cart  ERROR SOLVED::: There was a typo in the Cart handling function
+
+    const handleCloseCart = () => {
+        setIsCartOpen(false);
     };
 
     const handleOpenCart = () => {
-        setIsCartOpen(false);
+        setIsCartOpen(true);
     };
 
     // Navigation Menu
@@ -151,6 +157,10 @@ const Navbar = () => {
                                 >
                                     <Login />
                                 </IconButton>
+
+                                {/* ERROR:: In the mobile view, the sign-in menu's onClose prop should be handleCloseNavMenu: */}
+
+
                                 <Menu
                                     id="menu-appbar"
                                     anchorEl={anchorElNav}
@@ -164,22 +174,33 @@ const Navbar = () => {
                                         horizontal: 'left',
                                     }}
                                     open={Boolean(anchorElNav)}
-                                  
-                                    onClick={handleCloseUserMenu}
+                                    onClose={handleCloseNavMenu}
                                     sx={{
                                         display: { xs: 'block', md: 'none' },
                                     }}
                                 >
-                                    <MenuItem onClick={() => {
-                                      navigate("/Customerlogin")
-                                     }}>
-                                        <Typography textAlign="center">Sign in as customer</Typography>
+
+
+                                    {/* ERROR ::: The Link components in the menu items should be replaced with onClick handlers to use the navigate function: */}
+
+
+                                    <MenuItem onClick={() => navigate("/Profile")}>
+                                        <Avatar />
+                                        Profile
                                     </MenuItem>
-                                    <MenuItem onClick={() => {
-                                        navigate("/Sellerlogin")
-                                        handleCloseNavMenu()
-                                    }}>
-                                        <Typography textAlign="center">Sign in as seller</Typography>
+
+                                    <MenuItem onClick={() => navigate("/Orders")}>
+                                        <ListItemIcon>
+                                            <Shop2 fontSize="small" />
+                                        </ListItemIcon>
+                                        My Orders
+                                    </MenuItem>
+
+                                    <MenuItem onClick={() => navigate("/Logout")}>
+                                        <ListItemIcon>
+                                            <Logout fontSize="small" />
+                                        </ListItemIcon>
+                                        Logout
                                     </MenuItem>
                                 </Menu>
                             </>
@@ -268,6 +289,10 @@ const Navbar = () => {
 
                     {currentRole === "Customer" &&
                         <Box sx={{ flexGrow: 0, display: 'flex' }}>
+
+                            {/* ERROR ::: The handleOpenCart function is not used in the component. It should be used instead of handleOpen Cart: */}
+
+
                             <Tooltip title="Cart">
                                 <IconButton onClick={handleOpenCart} sx={{ width: "4rem", color: 'inherit', p: 0 }}>
                                     <Badge badgeContent={totalQuantity} color="error">

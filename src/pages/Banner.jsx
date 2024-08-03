@@ -15,7 +15,8 @@ const Banner = () => {
             keyBoardControl={true}
             showDots={true}
             slidesToSlide={1}
-            customTransition="all .5"
+            //ERROR::: The customTransition prop in the Carousel component is set to "all .5", which is not a valid CSS transition value. It should include a time unit. Consider changing it to!!
+            customTransition="all .5s"
             containerClass="carousel-container"
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"

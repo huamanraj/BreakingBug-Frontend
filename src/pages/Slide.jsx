@@ -1,6 +1,9 @@
 import { Divider, Box, Typography, Button, styled, Container } from '@mui/material';
 
-import { Link, useNavigate } from 'react-router';
+// ERrOR::: The Link component and useNavigate hook are both part of the react-router-dom package, not react-router.
+
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
 

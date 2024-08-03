@@ -8,19 +8,23 @@ import { useNavigate } from 'react-router-dom';
 import Popup from './Popup';
 import { addStuff } from '../redux/userHandle';
 
-const Products = ({}) => {
+//  imported useNavigate from react-router-dom and correctly defined or retrieve productData.
+
+
+const Products = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const itemsPerPage = 9;
 
-  const { currentRole, responseSearch } = useSelector();
+  const { currentRole, responseSearch, productData } = useSelector(state => state); // Retrieve productData from the state
   const [currentPage, setCurrentPage] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
 
   const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem + itemsPerPage;
-  const currentItems = (indexOfFirstItem, indexOfLastItem);
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage; // Fixed calculation
+  const currentItems = responseSearch.slice(indexOfFirstItem, indexOfLastItem); // Retrieve current items correctly
 
   const handleAddToCart = (event, product) => {
     event.stopPropagation();
@@ -39,7 +43,7 @@ const Products = ({}) => {
     setShowPopup(true)
   };
 
-  if (!responseSearch) {
+  if (!responseSearch || responseSearch.length === 0) {
     return <div>Product not found</div>;
   }
 
@@ -77,7 +81,6 @@ const Products = ({}) => {
                     </BasicButton>
                   </>
                 }
-
               </AddToCart>
             </ProductContainer>
           </Grid>
@@ -86,10 +89,10 @@ const Products = ({}) => {
 
       <Container sx={{ mt: 10, mb: 10, display: "flex", justifyContent: 'center', alignItems: "center" }}>
         <Pagination
-          count={Math.ceil(productData.length / itemsPerPage)}
+          count={Math.ceil(responseSearch.length / itemsPerPage)} // Use responseSearch length
           page={currentPage}
           color="secondary"
-
+          onChange={(event, value) => setCurrentPage(value)} // Handle page change
         />
       </Container>
 

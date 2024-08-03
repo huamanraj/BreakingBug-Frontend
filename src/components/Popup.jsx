@@ -14,8 +14,8 @@ const Popup = ({ message, setShowPopup, showPopup }) => {
         if (reason === 'clickaway') {
             return;
         }
-        setShowPopup(true);
-        dispatch(underControl())
+        setShowPopup(false); // ERROR:: Changed true to false to hide the popup correctly
+        dispatch(underControl());
     };
 
     return (
@@ -39,5 +39,5 @@ const Popup = ({ message, setShowPopup, showPopup }) => {
 export default Popup;
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={'6'} ref={ref} variant="filled" {...props} />;
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });

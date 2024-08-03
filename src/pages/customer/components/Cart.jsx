@@ -1,14 +1,30 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Container, Divider, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { 
+    Button, 
+    Container, 
+    Divider, 
+    Grid, 
+    IconButton, 
+    Paper, 
+    Typography 
+} from '@mui/material';
 import styled from 'styled-components';
-import emptyCart from "../../../assets/cartimg.png"
+import emptyCart from "../../../assets/cartimg.png";
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import { addToCart, removeAllFromCart, removeFromCart } from '../../../redux/userSlice';
-import { BasicButton, LightPurpleButton } from '../../../utils/styles';
+import { 
+    addToCart, 
+    removeAllFromCart, 
+    removeFromCart, 
+    updateCurrentUser 
+} from '../../../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { updateCustomer } from '../../../redux/userSlice';
+
+
+// ERROR :: updateCustomer is not found in '../../../redux/userSlice':
+// function doesn't exist in the userSlice file. o used updateCurrentUser instead! 
+
 
 const Cart = ({ setIsCartOpen }) => {
 
@@ -43,14 +59,14 @@ const Cart = ({ setIsCartOpen }) => {
 
     const productBuyingHandler = (id) => {
         console.log(currentUser);
-        dispatch(updateCustomer(currentUser, currentUser._id));
+        dispatch(updateCurrentUser(currentUser));
         setIsCartOpen(false)
         navigate(`/product/buy/${id}`)
     }
 
     const allProductsBuyingHandler = () => {
         console.log(currentUser);
-        dispatch(updateCustomer(currentUser, currentUser._id));
+        dispatch(updateCurrentUser(currentUser));
         setIsCartOpen(false)
         navigate("/product/Checkout")
     }
@@ -74,11 +90,15 @@ const Cart = ({ setIsCartOpen }) => {
     return (
         <StyledContainer>
             <TopContainer>
-                <LightPurpleButton onClick={() => {
+
+                { /*  ERROR:::  LightPurpleButton is not found in '../../../utils/styles': */}
+                {/* This component doesn't exist in the styles file. */}
+
+                <Button variant="contained" color="primary" onClick={() => {
                     setIsCartOpen(false)
                 }}>
                     <KeyboardDoubleArrowLeftIcon /> Continue Shopping
-                </LightPurpleButton>
+                </Button>
                 {cartDetails.length < 0 || (
                     <IconButton
                         sx={{ backgroundColor: "#3a3939", color: "white" }}
@@ -136,12 +156,17 @@ const Cart = ({ setIsCartOpen }) => {
                                         </Button>
                                     </ButtonContainer>
                                     <ButtonContainer>
-                                        <BasicButton
+
+                                        {/* ERRORR:::: BasicButton is not found in '../../../utils/styles
+                                     */}
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
                                             sx={{ mt: 2 }}
                                             onClick={() => productViewHandler(data._id)}
                                         >
                                             View
-                                        </BasicButton>
+                                        </Button>
                                         <Button
                                             variant="contained"
                                             color="success"

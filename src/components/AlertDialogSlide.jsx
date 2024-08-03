@@ -2,7 +2,9 @@ import React from "react";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from "@mui/material";
 import { GreenButton, RedButton } from "../utils/buttonStyles";
 
-const AlertDialogSlide = ({ dialog, showDialog, setShowDialog }) => {
+//  ERRORR:::: passed the taskHandler function as a prop to the AlertDialogSlide component.
+
+const AlertDialogSlide = ({ dialog, showDialog, setShowDialog, taskHandler }) => {
     const handleClose = () => {
         setShowDialog(false);
     };
@@ -17,8 +19,7 @@ const AlertDialogSlide = ({ dialog, showDialog, setShowDialog }) => {
             <DialogTitle>{dialog}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
-                    You won't be able to recover it back.
-                    Decide Now
+                    You won't be able to recover it back. Decide Now
                 </DialogContentText>
             </DialogContent>
             <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -27,8 +28,8 @@ const AlertDialogSlide = ({ dialog, showDialog, setShowDialog }) => {
                 </div>
                 <div>
                     <RedButton onClick={() => {
-                        handleClose()
-                        taskHandler()
+                        handleClose();
+                        taskHandler();
                     }}>Yes</RedButton>
                 </div>
             </DialogActions>
@@ -40,4 +41,4 @@ export default AlertDialogSlide;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-});
+}); 

@@ -11,30 +11,38 @@ const Logout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+
+  // ERROR::: The updateCustomer function in the useEffect hook is being called with only one argument, but it likely requires two (the customer object and the customer's ID):
+
   useEffect(() => {
     if (currentRole === "Customer") {
       console.log(currentUser);
-      dispatch(updateCustomer(currentUser));
+      dispatch(updateCustomer(currentUser, currentUser._id));
     }
   }, [currentRole, currentUser, dispatch])
+ 
+  // ERROR: The authLogout action is imported but not used. You should dispatch this action in the handleLogout function
 
   const handleLogout = () => {
-   
+    dispatch(authLogout()); 
     navigate('/');
   };
 
   const handleCancel = () => {
     navigate(-1);
   };
+ 
 
+   // ERROR :: There's no error handling for cases where currentUser might be null or undefined. It's a good practice to add a check!! 
+   
   return (
-    <LogoutContainer>
-      <h1>{currentUser.name}</h1>
-      <LogoutMessage>Are you sure you want to log out?</LogoutMessage>
-      <LogoutButtonLogout onClick={handleLogout}>Log Out</LogoutButtonLogout>
-      <LogoutButtonCancel onClick={handleCancel}>Cancel</LogoutButtonCancel>
-    </LogoutContainer>
-  );
+  <LogoutContainer>
+    {currentUser && <h1>{currentUser.name}</h1>}
+    <LogoutMessage>Are you sure you want to log out?</LogoutMessage>
+    <LogoutButtonLogout onClick={handleLogout}>Log Out</LogoutButtonLogout>
+    <LogoutButtonCancel onClick={handleCancel}>Cancel</LogoutButtonCancel>
+  </LogoutContainer>
+);
 };
 
 export default Logout;
